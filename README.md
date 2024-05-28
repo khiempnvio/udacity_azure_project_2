@@ -28,6 +28,6 @@ https://docs.google.com/spreadsheets/d/1p8G7eR6ItVUcQuKBGDGGwJW6gfh8JcfsDvpT5bLv
 ### Output
 **1. Create the Cloud-Based Development Environment**
 - Create a repo from github
-    ![Define prefix variable](/images/repo.png)
+    ![Define prefix variable](/images/repo.png?raw=true)
 - Launch an Azure Cloud Shell environment and create ssh-keys. Upload these keys to your GitHub account.
     ![Define prefix variable](/images/repo.png)
