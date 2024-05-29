@@ -30,4 +30,6 @@ https://docs.google.com/spreadsheets/d/1p8G7eR6ItVUcQuKBGDGGwJW6gfh8JcfsDvpT5bLv
 - Create a repo from github
     ![Define prefix variable](https://github.com/khiempnvio/udacity_azure_project_2/blob/main/Images/repo.png?raw=true)
 - Launch an Azure Cloud Shell environment and create ssh-keys. Upload these keys to your GitHub account.
-    ![Define prefix variable](/images/repo.png)
+    ![Define prefix variable](/images/ssh-keygen.png)
+- Take a screenshot showing the project cloned into Azure Cloud Shell.
+    ![Define prefix variable](/images/git-clone-from-azure-cloud-shell.png)
