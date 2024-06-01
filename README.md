@@ -197,7 +197,7 @@ https://docs.google.com/spreadsheets/d/1p8G7eR6ItVUcQuKBGDGGwJW6gfh8JcfsDvpT5bLv
         if __name__ == "__main__":
             app.run(host='0.0.0.0', port=5000, debug=True)
     ```
-4. Create a make_predict_azure_app file
+4. Create a make_predict_azure_app.sh file
     ```
         #!/usr/bin/env bash
 
@@ -263,9 +263,7 @@ https://docs.google.com/spreadsheets/d/1p8G7eR6ItVUcQuKBGDGGwJW6gfh8JcfsDvpT5bLv
     ```
     ```
 7. Create a commands.sh file
-    ```
-        az webapp up -n <your-appservice>
-    ```
+    > az webapp up -n <your-appservice>
 ### Output
 
 **1. Create the Cloud-Based Development Environment**
