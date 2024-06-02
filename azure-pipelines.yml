@@ -29,6 +29,7 @@ stages:
     pool: myAgentPool
     steps:    
     - script: |
+        sudo apt-get -y install zip
         python3.9 -m pip install -r requirements.txt
       workingDirectory: $(projectRoot)
       displayName: 'Step install requirements'
@@ -36,15 +37,9 @@ stages:
     - script: |
         export PATH=$HOME/.local/bin:$PATH
         make install
-      workingDirectory: $(projectRoot)
-      displayName: 'Step export and make'
-
-    - script: |
-        export PATH=$HOME/.local/bin:$PATH
-        make install
         make lint
       workingDirectory: $(projectRoot)
-      displayName:  'Step run lint tests'
+      displayName:  'Step export run lint tests'
 
     - task: ArchiveFiles@2
       displayName: 'Step archive files'
