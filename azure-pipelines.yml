@@ -31,23 +31,23 @@ stages:
     - script: |
         python3.9 -m pip install -r requirements.txt
       workingDirectory: $(projectRoot)
-      displayName: 'Install requirements'
+      displayName: 'Step install requirements'
 
     - script: |
         export PATH=$HOME/.local/bin:$PATH
         make install
       workingDirectory: $(projectRoot)
-      displayName: 'Update PATH'
+      displayName: 'Step export and make'
 
     - script: |
         export PATH=$HOME/.local/bin:$PATH
         make install
         make lint
       workingDirectory: $(projectRoot)
-      displayName:  'Run lint tests'
+      displayName:  'Step run lint tests'
 
     - task: ArchiveFiles@2
-      displayName: 'Archive files'
+      displayName: 'Step archive files'
       inputs:
         rootFolderOrFile: '$(projectRoot)'
         includeRootFolder: false
@@ -56,5 +56,5 @@ stages:
         replaceExistingArchive: true
 
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      displayName: 'Upload package'
+      displayName: 'Step upload package'
       artifact: drop
