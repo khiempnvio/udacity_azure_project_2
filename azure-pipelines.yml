@@ -13,7 +13,7 @@ variables:
   azureServiceConnectionId: 'myServiceConnection'
   
   # TODO: Specify the value of the existing Web App name
-  webAppName: 'khiempnwebapp1'
+  webAppName: 'khiempnudacity'
 
   # Environment name
   environmentName: 'flask-ml-service'
