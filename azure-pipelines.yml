@@ -1,18 +1,60 @@
-# Starter pipeline
+# Starter pipeline    
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
-
 trigger:
 - main
 
+# TODO: Replace the agent pool name
 pool: myAgentPool
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+variables:
+  # TODO: Replace the service connection name as used in the DevOps project settings
+  azureServiceConnectionId: 'myServiceConnection'
+  
+  # TODO: Specify the value of the existing Web App name
+  webAppName: 'khiempnwebapp1'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  # Environment name
+  environmentName: 'flask-ml-service'
+
+  # Project root folder. Point to the folder containing manage.py file.
+  projectRoot: $(System.DefaultWorkingDirectory)
+
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:
+  - job: BuildJob
+    pool: myAgentPool
+    steps:    
+    - script: |
+        python3.9 -m pip install -r requirements.txt
+      workingDirectory: $(projectRoot)
+      displayName: 'Install requirements'
+
+    - script: |
+        export PATH=$HOME/.local/bin:$PATH
+        make install
+      workingDirectory: $(projectRoot)
+      displayName: 'Update PATH'
+
+    - script: |
+        export PATH=$HOME/.local/bin:$PATH
+        make install
+        make lint
+      workingDirectory: $(projectRoot)
+      displayName:  'Run lint tests'
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(projectRoot)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      displayName: 'Upload package'
+      artifact: drop
