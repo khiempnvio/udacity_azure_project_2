@@ -1,0 +1,1 @@
+az webapp up -n khiempnudacity-flask-app-1 --resource-group Azuredevops --sku FREE
