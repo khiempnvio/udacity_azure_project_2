@@ -9,7 +9,7 @@ For this project, you will build a Github repository from scratch and create a s
 
 ## Dependencies
 1. Create an [Github Account](https://github.com)
-1. Create an [Azure Account](https://portal.azure.com)
+2. Create an [Azure Account](https://portal.azure.com)
 
 ## Trello board
 https://trello.com/b/4Gusjl7K/project-management-template-udacity-azure
@@ -35,6 +35,7 @@ https://docs.google.com/spreadsheets/d/1p8G7eR6ItVUcQuKBGDGGwJW6gfh8JcfsDvpT5bLv
     ![Define prefix variable](/Images/ssh-keygen.png?raw=true)
 
     - Copy the public key to Github Account -> Settings -> SSH and GPG keys (https://github.com/settings/keys)
+
     ![Define prefix variable](/Images/git_hub_ssh_key.png)
 
 #### Create Project Scaffolding
@@ -102,12 +103,293 @@ https://docs.google.com/spreadsheets/d/1p8G7eR6ItVUcQuKBGDGGwJW6gfh8JcfsDvpT5bLv
         source ~/.appvenv/bin/activate
     ```
     ![Define prefix variable](/Images/git_hub_python_environtment.png)
-3. Install all dependencies by using make
+3. Install all dependencies, verify code by Lint and run Tests by using make
     ```
         make all
     ```
-4. Run application using flask
+    ![Define prefix variable](/Images/git_hub_make_all_step_1.png)
+    ![Define prefix variable](/Images/git_hub_make_all_step_2.png)
+
+### 2. CI: Configure GitHub Actions
+GitHub Actions is a powerful feature provided by GitHub, enabling the creation of comprehensive CI/CD workflows. Within the context of this project, we harness GitHub Actions to execute our Continuous Integration (CI) processes. These processes encompass building, linting, and testing our code, all of which are performed seamlessly through GitHub Actions.
+
+- Architecture Diagram
+    ![Define prefix variable](/Images/ci-diagram_configure_gitHub_actions.png)
+
+To set up GitHub Actions for your repository, follow these steps:
+#### 1. Enable Github Actions
+Go to https://github.com/khiempnvio/udacity_azure_project_2/settings/actions
+
+![Define prefix variable](/Images/git_hub_enable_git_actions.png)
+#### 2. Run Github Actions
+1. Go to https://github.com/khiempnvio/udacity_azure_project_2/actions/new and select [set up a workflow yourself](https://github.com/khiempnvio/udacity_azure_project_2/new/main?filename=.github%2Fworkflows%2Fmain.yml&workflow_template=blank)
+
+2. Update file name main.yml to pythonapp.yml and change the code
+
+    Proceed with the workflow setup process. GitHub Actions will configure a workflow that suits the requirements of your code.
+
+    Customization of the actions to align with our specific needs is essential. The default action steps are designed to run Python commands. However, given that we employ the Make utility for building, testing, and linting our code, we will need to adjust the GitHub Actions configuration accordingly.
+
     ```
-        export FLASK_APP=app.py
-        flask run
+        name: Python application test with Github Actions
+
+        on: [push]
+
+        jobs:
+        build:
+
+            runs-on: ubuntu-latest
+
+            steps:
+            - uses: actions/checkout@v2
+            - name: Set up Python 3.10.14
+            uses: actions/setup-python@v1
+            with:
+                python-version: 3.10.14
+            - name: Install dependencies
+            run: |
+                make install
+            - name: Lint with pylint
+            run: |
+                make lint
+            - name: Test with pytest
+            run: |
+                make test
     ```
+    ![Define prefix variable](/Images/git_hub_pythonapp_yml.png)
+
+3. Git Actions results after push code
+    
+    Manually trigger the GitHub Action. Upon a successful launch, the results will be displayed below.
+
+    Go to https://github.com/khiempnvio/udacity_azure_project_2/actions
+    ![Define prefix variable](/Images/git_hub_actions_success.png)
+
+    Once the workflow is configured, our application will undergo continuous building with each push or pull request made to our main branch.
+### 3.Continuous Delivery on Azure
+Azure DevOps offers a comprehensive set of developer services, enabling teams to efficiently plan work, collaborate on code development, and build and deploy applications. This platform fosters a collaborative environment and establishes a cohesive set of processes that unite developers, project managers, and contributors in software development endeavors. With Azure DevOps, organizations can accelerate product development compared to traditional software development approaches.
+
+- Architecture Diagram
+    ![Define prefix variable](/Images/cd_diagram.png)
+
+To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
+1. Setting up Azure DevOps
+
+- If you don't already have an Azure DevOps account, go to 
+[dev.azure.com](https://dev.azure.com)  to sign up for a free account.
+
+- Create an Azure DevOps project:
+    - Create a new project and establish a connection to Azure. The screenshots below illustrate the process:
+    ![Define prefix variable](/Images/dev_az_create_project.png)
+    ![Define prefix variable](/Images/dev_az_create_project_step_2.png)
+    
+    - After creating the project, navigate to Project settings from the 
+    left navigation. On the Project Settings page, select Pipelines > Service connections, and then click on New service connection:
+    ![Define prefix variable](/Images/dev_az_create_service_connection.png)
+    - In the New Service Connections dialog, select Azure Resource Manager from the dropdown and click Next:
+    ![Define prefix variable](/Images/dev_az_create_service_connection_step_2.png)
+    - Select Service principal (manual) for Udacity Account, if you use personal account can select Service principal (automatic)
+    ![Define prefix variable](/Images/dev_az_create_service_connection_step_3.png)
+    - Choose the Resource Group of the Azure Web App deployed.
+    - Input a valid Service Connection Name.
+    - Check the box for Grant Access Permissions to all pipelines.
+    - Click Save.
+    ![Define prefix variable](/Images/dev_az_create_service_connection_step_4.png)
+    ![Define prefix variable](/Images/dev_az_create_service_connection_step_5.png)
+
+2. Setting up Azure Pipeline
+- First time you need to create a Personal Access Tokens by go to 
+    - Enter token Name
+    - Select Full access
+    - Click Create 
+    - After create you have a token to connect VM and agent
+- Create an Agent Pool to run jobs for Pipelines, and here we are using Linux to configure the Agent Pool. In Project Setting > Agent Pools > Add pool
+    - Go to https://dev.azure.com/odluser260175/_settings/agentpools
+    ![Define prefix variable](/Images/dev_az_create_agent_pool.png)
+    - Enter Pool type, Name and Description (optional)
+    - Click Create
+    ![Define prefix variable](/Images/dev_az_create_agent_pool_2.png)
+    ![Define prefix variable](/Images/dev_az_create_agent_pool_3.png)
+    - After create an agent pool, you have to creat a vitrual machine and add add it to Agent Pool you already create above
+        - Create new VM by go to [portal.azure.com](https://portal.azure.com) 
+        ![Define prefix variable](/Images/dev_az_create_vm_step_1.png)
+        ![Define prefix variable](/Images/dev_az_create_vm_step_2.png)
+        - Connect VM with Agent Pool by Azure CLI
+            - Login to VM
+            ```
+                ssh devopsagent@20.42.94.212
+            ```
+            ![Define prefix variable](/Images/dev_az_new_agent_step_3.png)
+            - After login you have to install docker
+            ```
+                sudo snap install docker
+            ```
+            ![Define prefix variable](/Images/dev_az_new_agent_step_4.png)
+            - You also configure the devopsagent user to run Docker
+            ```
+                sudo groupadd docker
+                sudo usermod -aG docker $USER
+                exit
+            ```
+            ![Define prefix variable](/Images/dev_az_new_agent_step_5.png)
+            - You also RESTART VM to apply changes
+
+            - Go to Agent Pool Detail and create New Agent
+            ![Define prefix variable](/Images/dev_az_new_agent_step_1.png)
+            ![Define prefix variable](/Images/dev_az_new_agent_step_2.png)
+            - Click copy button on Download the Agent, and run commands on Azure CLI
+
+            ```
+                curl -O https://vstsagentpackage.azureedge.net/agent/3.240.1/vsts-agent-linux-x64-3.240.1.tar.gz
+                mkdir myagent && cd myagent
+                tar zxvf ../vsts-agent-linux-x64-3.240.1.tar.gz
+                ./config.sh
+            ``` 
+            ![Define prefix variable](/Images/dev_az_new_agent_step_6.png)
+            ![Define prefix variable](/Images/dev_az_new_agent_step_7.png)
+            ![Define prefix variable](/Images/dev_az_new_agent_step_8.png)
+            
+            - Run two commands to complete config
+            ```
+                sudo ./svc.sh install
+                sudo ./svc.sh start
+            ```
+            ![Define prefix variable](/Images/dev_az_new_agent_step_9.png)
+            ![Define prefix variable](/Images/dev_az_new_agent_step_10.png)
+- Install Integrate Azure Pipelines on Github account
+    - Go to [https://github.com/marketplace/azure-pipelines](https://github.com/marketplace/azure-pipelines) to install
+    ![Define prefix variable](/Images/dev_az_azure_pipeline_github.png)
+- Update files and Clone the Repo, Create a Web Service
+    - Update files
+        1. Update Makefile
+            ```
+                setup:
+                    python3 -m venv ~/.flask-ml-azure
+                    #source ~/.flask-ml-azure/bin/activate
+                    
+                install:
+                    pip install --upgrade pip &&\
+                        pip install -r requirements.txt
+
+                test:
+                    #python -m pytest -vv --cov=myrepolib tests/*.py
+                    #python -m pytest --nbval notebook.ipynb
+
+
+                lint:
+                    #hadolint Dockerfile #uncomment to explore linting Dockerfiles
+                    pylint --disable=R,C,W1203,bare-except --fail-under=6 app.py
+
+                all: install lint test
+            ```
+
+        2. Update requirements.txt
+            ```
+                Flask== 2.2.2
+                pandas==1.3.5
+                scikit-learn==1.0.2
+                joblib==1.2.0
+                pylint==2.13.7
+                pytest==7.1.2
+            ```
+        3. Create a make_predict.sh file
+            ```
+            #!/usr/bin/env bash
+
+                PORT=5000
+                echo "Port: $PORT"
+
+                # POST method predict
+                curl -d '{  
+                "CHAS":{  
+                    "0":0
+                },
+                "RM":{  
+                    "0":6.575
+                },
+                "TAX":{  
+                    "0":296.0
+                },
+                "PTRATIO":{  
+                    "0":15.3
+                },
+                "B":{  
+                    "0":396.9
+                },
+                "LSTAT":{  
+                    "0":4.98
+                }
+                }'\
+                    -H "Content-Type: application/json" \
+                    -X POST http://localhost:$PORT/predict
+            ```
+        4. Create a make_predict_azure_app.sh file
+            ```
+                #!/usr/bin/env bash
+
+                PORT=443
+                echo "Port: $PORT"
+
+                # POST method predict
+                curl -d '{
+                "CHAS":{
+                    "0":0
+                },
+                "RM":{
+                    "0":6.575
+                },
+                "TAX":{
+                    "0":296.0
+                },
+                "PTRATIO":{
+                    "0":15.3
+                },
+                "B":{
+                    "0":396.9
+                },
+                "LSTAT":{
+                    "0":4.98
+                }
+                }'\
+                    -H "Content-Type: application/json" \
+                    -X POST http://khiempnudacity-flask-app-1.azurewebsites.net:$PORT/predict
+            ```
+        5. Create a locustfile.py file
+            ```
+            import time
+            from locust import HttpUser, task, between
+
+            class LoadTestPrediction(HttpUser):
+                wait_time = between(1, 3)
+
+                @task
+                def predict(self):
+                    self.client.post("/predict",json={
+                        "CHAS":{
+                            "0":0
+                        },
+                        "RM":{
+                            "0":6.575
+                        },
+                        "TAX":{
+                            "0":296.0
+                        },
+                        "PTRATIO":{
+                            "0":15.3
+                        },
+                        "B":{
+                            "0":396.9
+                        },
+                        "LSTAT":{
+                            "0":4.98
+                        }
+                    })
+            ```
+    Back to Azure CLI to create a service
+    1. Set up virtualenv
+    ```
+        python3 -m venv ~/.flask-ml-azure
+        source ~/.flask-ml-azure/bin/activate
+    ```
+    2. Clone Repo from github
+        
