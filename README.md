@@ -480,3 +480,97 @@ To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
         chmod +x make_predict_azure_app.sh
         ./make_predict_azure_app.sh
     ```
+
+- Setup Pipeline
+    - Select Pipeline from slide bar
+    ![Define prefix variable](/Images/dev_az_create_pipeline.png)
+    - Select Github(maybe it required login)
+    ![Define prefix variable](/Images/dev_az_create_pipeline_2.png)
+    - Select your Repo
+    ![Define prefix variable](/Images/dev_az_create_pipeline_3.png)
+    - Config file azure-pipelines.yml and click Run or Commit code to run
+    ```
+        # Starter pipeline    
+        # Start with a minimal pipeline that you can customize to build and deploy your code.
+        # Add steps that build, run tests, deploy, and more:
+        # https://aka.ms/yaml
+        trigger:
+        - main
+
+        # TODO: Replace the agent pool name
+        pool: myAgentPool
+
+        variables:
+        # TODO: Replace the service connection name as used in the DevOps project settings
+        azureServiceConnectionId: 'myServiceConnection'
+        
+        # TODO: Specify the value of the existing Web App name
+        webAppName: 'khiempnudacity-flask-app-1'
+
+        # Environment name
+        environmentName: 'flask-ml-service'
+
+        # Project root folder. Point to the folder containing manage.py file.
+        projectRoot: $(System.DefaultWorkingDirectory)
+
+        stages:
+        - stage: Build
+        displayName: Build stage
+        jobs:
+        - job: BuildJob
+            pool: myAgentPool
+            steps:    
+            - script: |
+                python -m venv appenv
+                source antenv/bin/activate
+                sudo apt-get update
+                sudo apt-get -y install make
+                sudo apt-get -y install zip
+                sudo apt-get -y install python3-pip
+                make install
+                # export PATH=$HOME/.local/bin:$PATH
+                # python3.9 -m pip install -r requirements.txt
+            workingDirectory: $(projectRoot)
+            displayName: 'Step install dependences'
+
+            - script: |
+                make lint
+                export FLASK_APP=app.py
+            workingDirectory: $(projectRoot)
+            displayName: 'Step verify code and export FLASK_APP'
+
+            - task: ArchiveFiles@2
+            displayName: 'Step archive files'
+            inputs:
+                rootFolderOrFile: '$(projectRoot)'
+                includeRootFolder: false
+                archiveType: zip
+                archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+                replaceExistingArchive: true
+
+            - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+            displayName: 'Step upload package'
+            artifact: drop
+
+        - stage: Deploy
+        displayName: 'Deploy Web App'
+        dependsOn: Build
+        condition: succeeded()
+        jobs:
+        - deployment: DeploymentJob
+            pool: myAgentPool
+            environment: $(environmentName)
+            strategy:
+            runOnce:
+                deploy:
+                steps:
+                - task: AzureWebApp@1
+                    displayName: 'Deploy Azure Web App : flask-ml-service'
+                    inputs:
+                    azureSubscription: $(azureServiceConnectionId)
+                    appName: $(webAppName)
+                    package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+    ```
+    ![Define prefix variable](/Images/dev_az_create_pipeline_4.png)
+    - You need to Permit for jobs, if your account have no permision
+    ![Define prefix variable](/Images/dev_az_create_pipeline_5.png)
