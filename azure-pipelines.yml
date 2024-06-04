@@ -13,7 +13,7 @@ variables:
   azureServiceConnectionId: 'myServiceConnection'
   
   # TODO: Specify the value of the existing Web App name
-  webAppName: 'khiempnudacity'
+  webAppName: 'khiemudacity2'
 
   # Environment name
   environmentName: 'flask-ml-service'
@@ -29,17 +29,22 @@ stages:
     pool: myAgentPool
     steps:    
     - script: |
+        python -m venv appenv
+        source antenv/bin/activate
+        sudo apt-get update
+        sudo apt-get -y install make
         sudo apt-get -y install zip
-        python3.9 -m pip install -r requirements.txt
+        make install
+        # export PATH=$HOME/.local/bin:$PATH
+        # python3.9 -m pip install -r requirements.txt
       workingDirectory: $(projectRoot)
-      displayName: 'Step install requirements'
+      displayName: 'Step install dependences'
 
     - script: |
-        export PATH=$HOME/.local/bin:$PATH
-        make install
         make lint
+        export FLASK_APP=app.py
       workingDirectory: $(projectRoot)
-      displayName:  'Step export run lint tests'
+      displayName: 'Step verify code and export FLASK_APP'
 
     - task: ArchiveFiles@2
       displayName: 'Step archive files'
@@ -53,6 +58,7 @@ stages:
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       displayName: 'Step upload package'
       artifact: drop
+
 - stage: Deploy
   displayName: 'Deploy Web App'
   dependsOn: Build
