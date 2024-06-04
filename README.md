@@ -391,5 +391,11 @@ To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
         python3 -m venv ~/.flask-ml-azure
         source ~/.flask-ml-azure/bin/activate
     ```
-    2. Clone Repo from github
-        
+    2. Clone Repo from github or pull if your repo is exists
+    ```
+        git clone git@github.com:khiempnvio/udacity_azure_project_2.git
+    ```
+    3. Run Make command to install dependences 
+    ```
+        make all
+    ```
