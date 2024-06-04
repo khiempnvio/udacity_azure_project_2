@@ -102,12 +102,49 @@ https://docs.google.com/spreadsheets/d/1p8G7eR6ItVUcQuKBGDGGwJW6gfh8JcfsDvpT5bLv
         source ~/.appvenv/bin/activate
     ```
     ![Define prefix variable](/Images/git_hub_python_environtment.png)
-3. Install all dependencies by using make
+3. Install all dependencies, verify code by Lint and run Tests by using make
     ```
         make all
     ```
-4. Run application using flask
+    ![Define prefix variable](/Images/git_hub_make_all_step_1.png)
+    ![Define prefix variable](/Images/git_hub_make_all_step_2.png)
+
+### 2. CI: Configure GitHub Actions
+- Architecture Diagram
+    ![Define prefix variable](/Images/ci-diagram_configure_gitHub_actions.png)
+#### 1. Enable Github Actions
+Go to https://github.com/khiempnvio/udacity_azure_project_2/settings/actions
+
+![Define prefix variable](/Images/git_hub_enable_git_actions.png)
+#### 2. Run Githu Actions
+1. Go to https://github.com/khiempnvio/udacity_azure_project_2/actions/new and select [set up a workflow yourself](https://github.com/khiempnvio/udacity_azure_project_2/new/main?filename=.github%2Fworkflows%2Fmain.yml&workflow_template=blank)
+
+2. Update file name main.yml to pythonapp.yml and change the code
     ```
-        export FLASK_APP=app.py
-        flask run
+        name: Python application test with Github Actions
+
+        on: [push]
+
+        jobs:
+        build:
+
+            runs-on: ubuntu-latest
+
+            steps:
+            - uses: actions/checkout@v2
+            - name: Set up Python 3.10.14
+            uses: actions/setup-python@v1
+            with:
+                python-version: 3.10.14
+            - name: Install dependencies
+            run: |
+                make install
+            - name: Lint with pylint
+            run: |
+                make lint
+            - name: Test with pytest
+            run: |
+                make test
     ```
+3. Git Actions results after push code
+    
