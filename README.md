@@ -489,10 +489,18 @@ To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
         locust
     ```
     ![Define prefix variable](/Images/dev_az_locust.png)
+    You can view track locust by command
     ```
         locust --headless --users 10 --spawn-rate 1 -H https://khiempnudacity-flask-app-1.azurewebsites.net
     ```
-     ![Define prefix variable](/Images/dev_az_locust_2.png)
+    ![Define prefix variable](/Images/dev_az_locust_2.png)
+    8. Logs of Azure Webapp
+    - Azure App Service offers the capability to access and view application logs. You can access these logs using Azure CLI commands: 
+        ```
+            az webapp log tail --name khiempnudacity-flask-app-1 --resource-group azuredevops
+        ```
+    ![Define prefix variable](/Images/dev_az_logs.png)
+
 - Setup Pipeline
     - Select Pipeline from slide bar
     ![Define prefix variable](/Images/dev_az_create_pipeline.png)
