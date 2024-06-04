@@ -25,4 +25,4 @@ curl -d '{
    }
 }'\
      -H "Content-Type: application/json" \
-     -X POST https://khiemudacity2.azurewebsites.net:$PORT/predict
+     -X POST https://localhost:$PORT/predict
