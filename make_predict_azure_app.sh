@@ -25,4 +25,4 @@ curl -d '{
    }
 }'\
      -H "Content-Type: application/json" \
-     -X POST https://khiempnudacity-flask-app-1.azurewebsites.net:$PORT/predict 
+     -X POST https://khiempnudacity-flask-app-1.azurewebsites.net/predict 
