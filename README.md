@@ -438,6 +438,10 @@ To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
                 if __name__ == "__main__":
                     app.run(host='0.0.0.0', port=5000, debug=True)
             ```
+        7. Create a command.sh file
+            ```
+                az webapp up -n khiempnudacity-flask-app-1 --resource-group Azuredevops --sku FREE
+            ```
     Back to Azure CLI to create a service
     1. Set up virtualenv
     ```
@@ -456,4 +460,23 @@ To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
     ```
         export FLASK_APP=app.py
         flask run
+    ```
+    ![Define prefix variable](/Images/dev_az_run_web_local.png)
+    ![Define prefix variable](/Images/dev_az_run_web_local_1.png)
+    5. Run make_prediction.sh
+        ```
+            chmod +x make_prediction.sh
+            ./make_prediction.sh
+        ```
+    6. Run web service by command
+    ```
+        chmod +x command.sh
+        ./command.sh
+    ```
+    ![Define prefix variable](/Images/dev_az_run_command.png)
+    ![Define prefix variable](/Images/dev_az_run_command_1.png)
+    6. Run make_predict_azure_app.sh
+    ```
+        chmod +x make_predict_azure_app.sh
+        ./make_predict_azure_app.sh
     ```
