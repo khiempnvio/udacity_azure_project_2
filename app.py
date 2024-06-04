@@ -11,29 +11,25 @@ LOG = create_logger(app)
 LOG.setLevel(logging.INFO)
 
 def scale(payload):
-    """Scales Payload"""
+    """Scale Payload"""
 
-    LOG.info("Scaling Payload: %s payload")
+    LOG.info("Scaling Payload: %s", payload)
     scaler = StandardScaler().fit(payload)
     scaled_adhoc_predict = scaler.transform(payload)
     return scaled_adhoc_predict
 
 @app.route("/")
 def home():
-    html = "<h3>Sklearn Prediction Home</h3>"
-    return html.format(format)
+    html = "<h3>Sklearn Prediction Home, Welcome to service</h3>"
+    return html
 
-# TO DO:  Log out the prediction value
+# TO DO: Log out the prediction value
 @app.route("/predict", methods=['POST'])
 def predict():
-    # Performs an sklearn prediction
     try:
-        # Load pretrained model as clf. Try any one model. 
-        # clf = joblib.load("./Housing_price_model/LinearRegression.joblib")
-        # clf = joblib.load("./Housing_price_model/StochasticGradientDescent.joblib")
-        clf = joblib.load("./Housing_price_model/GradientBoostingRegressor.joblib")
-    except:
-        LOG.info("JSON payload: %s json_payload")
+        clf = joblib.load("GradientBoostingRegressor.joblib")
+    except Exception as e:
+        LOG.error("Model loading error: %s", str(e))
         return "Model not loaded"
 
     json_payload = request.json

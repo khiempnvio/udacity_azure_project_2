@@ -17,6 +17,10 @@ https://trello.com/b/4Gusjl7K/project-management-template-udacity-azure
 ## Spreadsheet
 https://docs.google.com/spreadsheets/d/1p8G7eR6ItVUcQuKBGDGGwJW6gfh8JcfsDvpT5bLv3L4/edit?usp=sharing
 
+## Demonstration
+
+https://docs.google.com/spreadsheets/d/1p8G7eR6ItVUcQuKBGDGGwJW6gfh8JcfsDvpT5bLv3L4/edit?usp=sharing
+
 ## Instructions
 
 ### 1. CI: Set Up Azure Cloud Shell
@@ -480,7 +484,15 @@ To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
         chmod +x make_predict_azure_app.sh
         ./make_predict_azure_app.sh
     ```
-
+    7. Run locust from Azure CLI
+    ```
+        locust
+    ```
+    ![Define prefix variable](/Images/dev_az_locust.png)
+    ```
+        locust --headless --users 10 --spawn-rate 1 -H https://khiempnudacity-flask-app-1.azurewebsites.net
+    ```
+     ![Define prefix variable](/Images/dev_az_locust_2.png)
 - Setup Pipeline
     - Select Pipeline from slide bar
     ![Define prefix variable](/Images/dev_az_create_pipeline.png)
@@ -572,5 +584,16 @@ To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
                     package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
     ```
     ![Define prefix variable](/Images/dev_az_create_pipeline_4.png)
-    - You need to Permit for jobs, if your account have no permision
+
+    You need to Permit for jobs, if your account have no permision
     ![Define prefix variable](/Images/dev_az_create_pipeline_5.png)
+
+    After you Permit jobs will be run
+    - Stage BuildJob should be success
+    ![Define prefix variable](/Images/dev_az_create_pipeline_6.png)
+    - Stage DeploymentJob should be success
+    ![Define prefix variable](/Images/dev_az_create_pipeline_7.png)
+    ![Define prefix variable](/Images/dev_az_create_pipeline_8.png)
+    Anytime you change something, the pipeline will be auto run and deploy web service
+## Resource Cleanup
+To prevent incurring Azure resource charges related to this project, it is advisable to remove the resource group housing the App Service and the App Service Plan.
