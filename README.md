@@ -472,11 +472,13 @@ To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
     ```
     ![Define prefix variable](/Images/dev_az_run_web_local.png)
     ![Define prefix variable](/Images/dev_az_run_web_local_1.png)
+
     5. Run make_prediction.sh
-        ```
-            chmod +x make_prediction.sh
-            ./make_prediction.sh
-        ```
+    ```
+        chmod +x make_prediction.sh
+        ./make_prediction.sh
+    ```
+    
     6. Run web service by command
     ```
         chmod +x command.sh
