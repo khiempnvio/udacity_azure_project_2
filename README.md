@@ -10,12 +10,17 @@ For this project, you will build a Github repository from scratch and create a s
 ## Dependencies
 1. Create an [Github Account](https://github.com)
 2. Create an [Azure Account](https://portal.azure.com)
+2. Create an [Dev Azure Account](https://dev.azure.com)
 
 ## Trello board
 https://trello.com/b/4Gusjl7K/project-management-template-udacity-azure
 
 ## Spreadsheet
 https://docs.google.com/spreadsheets/d/1p8G7eR6ItVUcQuKBGDGGwJW6gfh8JcfsDvpT5bLv3L4/edit?usp=sharing
+
+## Architecture Diagram
+
+![Define prefix variable](/Images/architecture.png?raw=true)
 
 ## Demonstration
 
@@ -27,7 +32,7 @@ https://docs.google.com/spreadsheets/d/1p8G7eR6ItVUcQuKBGDGGwJW6gfh8JcfsDvpT5bLv
 
 #### Create the Cloud-Based Development Environment
 1. Create a GitHub Repo
-    ![Define prefix variable](https://github.com/khiempnvio/udacity_azure_project_2/blob/main/Images/repo.png?raw=true)
+    ![Define prefix variable](/Images/repo.png?raw=true)
 
 2. Log in Azure Portal and access Azure Cloud Shell
 
@@ -483,6 +488,11 @@ To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
     ```
         chmod +x make_predict_azure_app.sh
         ./make_predict_azure_app.sh
+    ```
+    We will get the result
+    ```
+        Port: 443
+        {"prediction":[20.353731771344123]}
     ```
     7. Run locust from Azure CLI
     ```
