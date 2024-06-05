@@ -10,7 +10,7 @@ For this project, you will build a Github repository from scratch and create a s
 ## Dependencies
 1. Create an [Github Account](https://github.com)
 2. Create an [Azure Account](https://portal.azure.com)
-2. Create an [Dev Azure Account](https://dev.azure.com)
+3. Create an [Dev Azure Account](https://dev.azure.com)
 
 ## Trello board
 https://trello.com/b/4Gusjl7K/project-management-template-udacity-azure
