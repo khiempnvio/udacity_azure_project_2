@@ -265,6 +265,20 @@ To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
             ```
             ![Define prefix variable](/Images/dev_az_new_agent_step_9.png)
             ![Define prefix variable](/Images/dev_az_new_agent_step_10.png)
+
+            - Run there are command on vitrual machine to config
+            ```
+            sudo apt-get update
+            sudo apt update
+            sudo apt install software-properties-common
+            sudo add-apt-repository ppa:deadsnakes/ppa
+
+            sudo apt install python3.9
+            sudo apt-get install python3.9-venv
+            sudo apt-get install python3-pip
+            python3.9 --version
+            pip --version 
+            ```
 - Install Integrate Azure Pipelines on Github account
     - Go to [https://github.com/marketplace/azure-pipelines](https://github.com/marketplace/azure-pipelines) to install
     ![Define prefix variable](/Images/dev_az_azure_pipeline_github.png)
@@ -615,5 +629,7 @@ To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
     ![Define prefix variable](/Images/dev_az_create_pipeline_7.png)
     ![Define prefix variable](/Images/dev_az_create_pipeline_8.png)
     Anytime you change something, the pipeline will be auto run and deploy web service
+    - This is a web app
+    ![Define prefix variable](/Images/dev_az_web_app.png)
 ## Resource Cleanup
 To prevent incurring Azure resource charges related to this project, it is advisable to remove the resource group housing the App Service and the App Service Plan.
