@@ -26,7 +26,7 @@ https://docs.google.com/spreadsheets/d/1p8G7eR6ItVUcQuKBGDGGwJW6gfh8JcfsDvpT5bLv
 
 ## Demonstration
 
-https://youtu.be/0xHhV9yv72g
+https://youtu.be/QAz9EHo82Wo
 
 ## Instructions
 
@@ -272,7 +272,7 @@ To Set Up Azure Pipelines for Continuous Delivery, follow these steps:
             ```
             sudo apt-get update
             sudo apt update
-            sudo apt install software-properties-common
+            sudo apt install  software-properties-common
             sudo add-apt-repository ppa:deadsnakes/ppa
 
             sudo apt install python3.9
