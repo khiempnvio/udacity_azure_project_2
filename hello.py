@@ -1,5 +1,5 @@
 def toyou(x):
-    return "hi %s" % x
+    return "hi %s there" % x
 
 
 def add(x):
