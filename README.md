@@ -1,3 +1,5 @@
+[![Python application test with Github Actions](https://github.com/khiempnvio/udacity_azure_project_2/actions/workflows/pythonapp.yml/badge.svg)](https://github.com/khiempnvio/udacity_azure_project_2/actions/workflows/pythonapp.yml)
+
 # Azure Infrastructure Operations Project: Building a CI/CD Pipeline
 
 ## Introduction
